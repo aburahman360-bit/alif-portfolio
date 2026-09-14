@@ -37,9 +37,6 @@
   } catch (e) { /* private mode — keep the default */ }
 </script>
 
-<!-- Without JS the scroll-reveal animation never runs, so opt out of it entirely. -->
-<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
-
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -287,13 +284,13 @@
       <!-- Filtering is pure CSS: the radio state below is read by :has() in styles.css. -->
       <fieldset class="filters reveal">
         <legend class="visually-hidden">Filter projects by focus</legend>
-        <input type="radio" name="projectFilter" id="filterAll" class="visually-hidden" checked>
+        <input type="radio" name="projectFilter" id="filterAll" checked>
         <label for="filterAll">All</label>
-        <input type="radio" name="projectFilter" id="filterGov" class="visually-hidden">
+        <input type="radio" name="projectFilter" id="filterGov">
         <label for="filterGov">Government</label>
-        <input type="radio" name="projectFilter" id="filterInt" class="visually-hidden">
+        <input type="radio" name="projectFilter" id="filterInt">
         <label for="filterInt">Integration</label>
-        <input type="radio" name="projectFilter" id="filterSup" class="visually-hidden">
+        <input type="radio" name="projectFilter" id="filterSup">
         <label for="filterSup">Maintenance</label>
       </fieldset>
 

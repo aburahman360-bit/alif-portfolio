@@ -700,6 +700,22 @@
     gap: 0.5rem;
     margin-block-end: var(--space-md);
 
+    /* The label is the visible control, so the radio itself stays clipped at
+       all times — including while focused, which is why the shared
+       .visually-hidden utility (it un-hides on :focus) is wrong here. Focus is
+       shown on the label instead, via :focus-visible below. */
+    & input {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      margin: -1px;
+      padding: 0;
+      border: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+
     & label {
       display: inline-block;
       padding: 0.4rem 0.95rem;
@@ -966,19 +982,22 @@
   to   { transform: scaleX(1); }
 }
 
-/* Fallback path: IntersectionObserver toggles .is-visible. */
-.reveal {
+/* Content is visible by default and only hidden once script.js has confirmed
+   it is alive by adding .js to <html>. If the script fails to load or throws,
+   the page still reads normally instead of going blank. */
+.js .reveal {
   opacity: 0;
   translate: 0 18px;
   transition: opacity 0.6s ease, translate 0.6s var(--ease);
 }
 
-.reveal.is-visible { opacity: 1; translate: 0; }
+/* Fallback path: IntersectionObserver toggles .is-visible. */
+.js .reveal.is-visible { opacity: 1; translate: 0; }
 
 /* Cards sharing a grid row must never drift apart mid-animation, so grid
    children fade in place instead of sliding. */
-.grid > .reveal,
-.contact > .reveal { translate: none; }
+.js .grid > .reveal,
+.js .contact > .reveal { translate: none; }
 
 /* Preferred path: the browser drives reveals off scroll position itself, so no
    IntersectionObserver work is needed. script.js adds .has-scroll-anim. */
@@ -1005,6 +1024,7 @@
   html { scroll-behavior: auto; }
 
   .reveal,
+  .js .reveal,
   .has-scroll-anim .reveal {
     opacity: 1;
     translate: none;
@@ -1110,7 +1130,8 @@
 
   body { background: #fff; color: #000; }
 
-  .reveal { opacity: 1; translate: none; animation: none; }
+  .reveal,
+  .js .reveal { opacity: 1; translate: none; animation: none; }
 
   .section,
   .hero { padding-block: 1.2rem; }

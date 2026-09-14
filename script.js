@@ -10,6 +10,11 @@
   'use strict';
 
   var root = document.documentElement;
+
+  // Opt into the reveal animations. Until this runs, .reveal content is plainly
+  // visible, so a failed or blocked script.js can never blank out the page.
+  root.classList.add('js');
+
   var reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   var supportsScrollAnim =
     window.CSS &&
@@ -88,7 +93,11 @@
   function updateScrollState() {
     ticking = false;
     nav.classList.toggle('is-stuck', window.scrollY > 8);
-    toTop.classList.toggle('is-visible', window.scrollY > 500);
+
+    // Stand down near the end of the page so the floating button never covers
+    // the footer's own "Back to top" link.
+    var nearFooter = window.scrollY + window.innerHeight > root.scrollHeight - 140;
+    toTop.classList.toggle('is-visible', window.scrollY > 500 && !nearFooter);
 
     if (supportsScrollAnim) return; // CSS owns the progress bar
     var max = root.scrollHeight - window.innerHeight;
