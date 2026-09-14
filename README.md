@@ -1,20 +1,67 @@
 # Muhammad Alif Izzuddin — Portfolio
 
-A static, dependency-free portfolio site built from my CV.
+A static, dependency-free portfolio site built from my CV. No build step, no
+frameworks — open `index.html` in a browser to view it.
 
 ```
-index.html    markup and all content
-styles.css    design tokens, layout, light/dark themes, print styles
-script.js     theme toggle, mobile nav, scroll spy, reveal animations, counters
+index.html                      markup, metadata and JSON-LD
+styles.css                      cascade layers, themes, layout, print styles
+script.js                       progressive-enhancement behaviour
+favicon.svg                     monogram icon
+site.webmanifest                installable-app metadata
+Muhammad-Alif-Izzuddin-CV.pdf   linked by the "Download CV" button
 ```
 
-No build step, no frameworks. Open `index.html` in a browser to view it locally.
+## HTML
+
+Semantic, valid HTML5 throughout: `<header>`/`<main>`/`<section>`/`<article>`/
+`<address>`, `<time datetime>` on every date, `<dl>` for the stat and contact
+pairs, `<data value>` for the animated counters, and `<abbr title>` on acronyms
+(SDLC, UAT, MSSQL, ERP …) so the expansion is one hover or tap away.
+
+The `<head>` carries a description, Open Graph and Twitter card tags, per-scheme
+`theme-color`, a web app manifest and a `schema.org/Person` JSON-LD block, so
+search engines and link previews get structured data rather than guesses.
+
+## CSS
+
+Written against modern CSS rather than workarounds:
+
+| Feature | Used for |
+| --- | --- |
+| `@layer` | Cascade order: reset → tokens → base → layout → components → utilities |
+| Native nesting | Grouping state and descendant rules with their component |
+| `:has()` | The project filter and the open-menu header state — no JavaScript |
+| Container queries | Project cards adapt to their own width, not the viewport |
+| `subgrid` | Card headers, descriptions and tags line up across a row |
+| `@property` | Typed custom property so the hero glow can animate smoothly |
+| Scroll-driven animations | `animation-timeline: view()` / `scroll()` drive reveals and the progress bar |
+| `clamp()` / `color-mix()` | Fluid type scale and palette derived from a single accent |
+| Logical properties | `inline-size`, `margin-block`, `inset-inline` throughout |
+| `text-wrap: balance` | Headings break evenly instead of leaving orphans |
+
+Preference queries are respected: `prefers-color-scheme`,
+`prefers-reduced-motion`, `prefers-contrast` and `prefers-reduced-transparency`.
+A print stylesheet lays the page out for paper and spells out link targets.
+
+### Theming
+
+Colours live as custom properties on `:root` (light) and
+`:root[data-theme="dark"]`. A tiny inline script in `<head>` applies the stored
+or system theme before first paint, so there is no flash of the wrong palette.
+
+## JavaScript
+
+Every behaviour is progressive enhancement — with JS disabled a `<noscript>`
+rule switches the reveal animations off and the page reads normally. Where the
+browser supports scroll-driven CSS animations, the reveal and progress-bar work
+is handed to CSS and the script does less.
 
 ## Editing
 
-All content lives in `index.html` — update the text there. Colours, spacing and
-typography are controlled by the CSS custom properties at the top of `styles.css`
-(`:root` for light, `[data-theme="dark"]` for dark).
+Content lives in `index.html`. To add a project, copy an `<article class="project">`
+block and set `data-focus` to any of `government`, `integration`, `maintenance` —
+the CSS filter picks it up automatically.
 
 ## Deploying to GitHub Pages
 
